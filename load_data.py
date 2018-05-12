@@ -45,9 +45,12 @@ def create_dataset(path, label):
 	sorted_label_size = sorted(label_size.iteritems(), key=lambda (k, v): (v,k))
 	index, length_greater = calculate_other_label_length(label_size, label, sorted_label_size)
 
+	i = 0
 	for k, v in sorted_label_size:
+		if k == label:
+			continue
 		label_count = 0
-		if index > 0 :
+		if i >= index:
 			label_count = length_greater
 		else:
 			label_count = v
@@ -58,6 +61,7 @@ def create_dataset(path, label):
 			column23 = []
 			for cols in itertools.islice(csv.reader(f_in, delimiter=","), label_count):
 				column23.append(cols[1:3])
+		i += 1
 		XY = XY + column23
 
 	shuffle(XY)
